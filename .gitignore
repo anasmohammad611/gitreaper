@@ -35,3 +35,5 @@ build/
 # Config files for testing
 .gitreaperrc.test
 /.idea
+/go.mod
+/go.sum
