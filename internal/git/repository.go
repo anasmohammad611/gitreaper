@@ -219,3 +219,34 @@ func (r *Repository) getBranchInfo(branchName, mergedInto string) (BranchInfo, e
 		LastAuthor: commit.Author.Name,
 	}, nil
 }
+
+// DeleteBranch deletes a local branch
+func (r *Repository) DeleteBranch(branchName string) error {
+	// Get branch reference
+	refName := plumbing.NewBranchReferenceName(branchName)
+
+	// Delete the reference
+	err := r.repo.Storer.RemoveReference(refName)
+	if err != nil {
+		return fmt.Errorf("failed to delete branch %s: %w", branchName, err)
+	}
+
+	return nil
+}
+
+// DeleteBranches deletes multiple branches and returns results
+func (r *Repository) DeleteBranches(branches []BranchInfo) ([]string, []error) {
+	var deleted []string
+	var errors []error
+
+	for _, branch := range branches {
+		err := r.DeleteBranch(branch.Name)
+		if err != nil {
+			errors = append(errors, fmt.Errorf("failed to delete %s: %w", branch.Name, err))
+		} else {
+			deleted = append(deleted, branch.Name)
+		}
+	}
+
+	return deleted, errors
+}

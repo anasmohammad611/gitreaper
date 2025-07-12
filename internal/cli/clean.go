@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"github.com/anasmohammad611/gitreaper/internal/git"
+	"github.com/anasmohammad611/gitreaper/internal/ui"
 	"github.com/spf13/cobra"
 )
 
@@ -59,9 +60,37 @@ func runClean(cmd *cobra.Command, args []string) error {
 			branch.LastAuthor)
 	}
 
-	// TODO: Ask for confirmation
-	// TODO: Delete branches
+	// Step 5: Ask for confirmation
+	confirmed, err := ui.ConfirmDeletion(len(mergedBranches))
+	if err != nil {
+		return fmt.Errorf("failed to get user confirmation: %w", err)
+	}
 
+	if !confirmed {
+		fmt.Println("\n❌ Operation cancelled by user")
+		return nil
+	}
+
+	// Step 6: Delete branches
+	fmt.Println("\n🗑️  Deleting merged branches...")
+	deleted, deleteErrors := repo.DeleteBranches(mergedBranches)
+
+	// Step 7: Report results
+	if len(deleted) > 0 {
+		fmt.Printf("\n✅ Successfully deleted %d branch(es):\n", len(deleted))
+		for _, branchName := range deleted {
+			fmt.Printf("  • %s\n", branchName)
+		}
+	}
+
+	if len(deleteErrors) > 0 {
+		fmt.Printf("\n❌ Failed to delete %d branch(es):\n", len(deleteErrors))
+		for _, err := range deleteErrors {
+			fmt.Printf("  • %s\n", err.Error())
+		}
+	}
+
+	fmt.Println("\n🎉 Repository cleanup completed!")
 	return nil
 }
 
