@@ -5,7 +5,7 @@ Clean up your Git repository like a pro.
 
 [![Go Version](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat&logo=go)](https://golang.org)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GitHub Actions](https://img.shields.io/github/actions/workflow/status/anasmohammad611/gitreaper/ci.yml?branch=main)](https://github.com/yourusername/gitreaper/actions)
+[![GitHub Actions](https://img.shields.io/github/actions/workflow/status/anasmohammad611/gitreaper/ci.yml?branch=main)](https://github.com/anasmohammad611/gitreaper/actions)
 [![Latest Release](https://img.shields.io/github/v/release/anasmohammad611/gitreaper)](https://github.com/yourusername/gitreaper/releases)
 
 ---
